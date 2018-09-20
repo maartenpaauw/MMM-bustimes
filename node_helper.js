@@ -25,7 +25,9 @@ module.exports = NodeHelper.create({
      */
     getData: function() {
         var self = this;
-        var ovUrl = this.config.apiBase + "/" + this.config.tpcEndpoint + "/" + this.config.timepointcode;
+        var ovUrl = this.config.apiBase + "/" +
+                    this.config.tpcEndpoint + "/" +
+                    self.timepointcode(this.config.timepointcode);
 
         request({
             url: ovUrl,
@@ -38,6 +40,10 @@ module.exports = NodeHelper.create({
                 console.log(self.name + ": Could not load timepoint(s) on url:" + ovUrl);
             }
         });
+    },
+
+    timepointcode: function (tpc) {
+        return typeof tpc === "array" ? tpc.join() : tpc;
     },
 
     socketNotificationReceived: function(notification, payload) {
